@@ -14,6 +14,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
 const fs_1 = __importDefault(require("fs"));
 const Jimp = require("jimp");
+const path = require("path");
+const folder = path.resolve('./src/util/tmp');
 // filterImageFromURL
 // helper function to download, filter, and save the filtered image locally
 // returns the absolute path to the local image
@@ -71,4 +73,13 @@ function validateImage(url) {
     });
 }
 exports.validateImage = validateImage;
+function getFiles() {
+    const files = [];
+    fs_1.default.readdirSync(folder).forEach(file => {
+        const absolutePath = path.resolve(folder, file);
+        files.push(absolutePath);
+    });
+    return files;
+}
+exports.getFiles = getFiles;
 //# sourceMappingURL=util.js.map
