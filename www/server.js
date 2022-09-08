@@ -42,8 +42,10 @@ const util_1 = require("./util/util");
         res.send("try GET /filteredimage?image_url={{}}");
     }));
     app.get("/filteredimage/", (req, res) => __awaiter(this, void 0, void 0, function* () {
+        const { resolve } = require('path');
         const { image_url } = req.query;
         let filtered_url;
+        const absolutePath = resolve('');
         if (!image_url) {
             return res.status(400)
                 .send(`Sorry image url query is required`);
@@ -56,9 +58,12 @@ const util_1 = require("./util/util");
         catch (error) {
             res.status(400).send(error);
         }
-        return yield util_1.deleteLocalFiles([filtered_url]);
     }));
     // Delete image files store on the server
+    app.post("/delete-files", (req, res) => __awaiter(this, void 0, void 0, function* () {
+        util_1.deleteLocalFiles(util_1.getFiles());
+        res.status(200).send("All stored files have been deleted successfully");
+    }));
     // Start the Server
     app.listen(port, () => {
         console.log(`server running http://localhost:${port}`);

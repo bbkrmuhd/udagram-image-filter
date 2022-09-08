@@ -44,31 +44,36 @@ export async function deleteLocalFiles(files: Array<string>) {
   }
 }
 
-export async function validateImage(url: string) {
-
-  const validImage = await axios.get(url).then(
-    (resp) => {
-      if (resp.status !== 200){
-        throw new Error("Image not found")
-      }
-      if (!resp.headers["content-type"].includes("image")) {
-        throw new Error("Invalid image type")
-      } 
-    }
-  ).catch((err) => {
-    return err["message"]
-  })
-  return validImage
-}
-
-
 
 export function getFiles() {
  const files: any[] = [];
+ 
  fs.readdirSync( folder ).forEach( file => {
     const absolutePath = path.resolve( folder, file );
     files.push(absolutePath)
  });
+
  return files
 }
 
+
+export async function validateImage(url: string) {
+
+  const validImage = await axios.get(url).then(
+
+    (resp) => {
+      if (resp.status !== 200){
+        throw new Error("Image not found")
+      }
+
+      if (!resp.headers["content-type"].includes("image")) {
+        throw new Error("Invalid image type")
+      } 
+
+    }
+  ).catch((err) => {
+    return err["message"]
+  })
+
+  return validImage
+}
