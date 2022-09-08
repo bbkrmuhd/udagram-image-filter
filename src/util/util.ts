@@ -1,8 +1,11 @@
 import axios from "axios";
 import { response } from "express";
 import fs from "fs";
-import { url } from "inspector";
 import Jimp = require("jimp");
+
+const path = require( "path" );
+const folder = path.resolve('./src/util/tmp');
+
 
 // filterImageFromURL
 // helper function to download, filter, and save the filtered image locally
@@ -57,3 +60,15 @@ export async function validateImage(url: string) {
   })
   return validImage
 }
+
+
+
+export function getFiles() {
+ const files: any[] = [];
+ fs.readdirSync( folder ).forEach( file => {
+    const absolutePath = path.resolve( folder, file );
+    files.push(absolutePath)
+ });
+ return files
+}
+

@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles, validateImage} from './util/util';
-import { url } from 'inspector';
+import {filterImageFromURL, deleteLocalFiles, validateImage, getFiles} from './util/util';
+
 
 (async () => {
 
@@ -39,8 +39,11 @@ import { url } from 'inspector';
   } );
 
   app.get("/filteredimage/",async (req: Request, res: Response) => {
+    const {resolve} = require('path');
     const { image_url }  = req.query;
     let filtered_url;
+    const absolutePath = resolve('');
+
 
     if ( !image_url ) {
       return res.status(400)
@@ -55,10 +58,15 @@ import { url } from 'inspector';
     } catch (error) {
        res.status(400).send(error)
     }
-    return await deleteLocalFiles([filtered_url])
   })
 
     // Delete image files store on the server
+
+    app.post("/delete-files", async (req: Request, res: Response) => {
+      deleteLocalFiles(getFiles());
+      res.status(200).send("All stored files have been deleted successfully");
+    });
+    
   // Start the Server
   app.listen( port, () => {
       console.log( `server running http://localhost:${ port }` );
