@@ -50,6 +50,7 @@ import {filterImageFromURL, deleteLocalFiles, validateImage, getFiles} from './u
                 .send(`Sorry image url query is required`);
     }
 
+
     validateImage(image_url)
 
     try {
@@ -66,7 +67,7 @@ import {filterImageFromURL, deleteLocalFiles, validateImage, getFiles} from './u
       deleteLocalFiles(getFiles());
       res.status(200).send("All stored files have been deleted successfully");
     });
-    
+
   // Start the Server
   app.listen( port, () => {
       console.log( `server running http://localhost:${ port }` );
